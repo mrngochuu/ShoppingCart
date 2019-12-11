@@ -1,0 +1,21 @@
+.details p,.details li{
+	color: #999999;
+	line-height: 1.5;
+}
+
+.details h1, .details h3 {
+	border-bottom: 1px solid #999999;
+	text-shadow: 1px 1px 1px rgb(0,0,0,0.5);
+	font-weight: 400;
+    line-height: 2.0;
+}
+
+.details h2 {
+	font-weight: 400;
+    line-height: 2.0;
+	text-shadow: 1px 1px 1px rgb(0,0,0,0.5);
+}
+
+button:hover {
+	box-shadow: 1px 1px 1px rgb(0,0,0,0.5);
+}

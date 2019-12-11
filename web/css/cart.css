@@ -1,0 +1,17 @@
+.table>tbody>tr>td,
+.table>tfoot>tr>td {
+  vertical-align: middle;
+}
+
+.col-sm-7 {
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+.table {
+  box-shadow: 2px 2px 2px rgb(0,0,0,0.5);
+}
+
+.table>tbody>tr:hover {
+	box-shadow: 2px 2px 2px rgb(0,0,0,0.5);
+}

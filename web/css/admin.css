@@ -1,0 +1,126 @@
+* {
+	font-family: "Oswald", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	box-sizing: border-box;
+}
+body {
+	width: 100%;
+	background-color: #eeeeee;
+}
+
+header {
+	background-color: #3c8dbc;
+	min-height: 40px;
+	opacity: 0.8;
+	margin-bottom: 5px;
+}
+
+
+header div:hover {
+	background-color: #113f67;
+}
+
+
+.menu_ {
+	background-color: #1a2226;
+}
+
+.menu_ a {
+	line-height: 1.42857143;
+	color: #dfe2e2;
+	font-size: 14px;
+	text-decoration-line: none;
+}
+
+.menu_:hover {
+	background-color: #115173;
+}
+
+.menu_ a:hover {
+	color: white;
+}
+
+.icon {
+	width: 50px;
+	height: 40px;
+	margin-right: auto;
+	margin-left: auto;
+	float: right;
+}
+
+
+.info_admin {
+	width: auto;
+	height: 40px;
+	margin-right: auto;
+	margin-left: auto;
+	float: right;
+	padding-right: 15px;
+}
+
+.info_admin strong {
+	font-size: 15px;
+	color: white;
+}
+
+@media screen and (max-width: 800px) {
+
+}
+
+main {
+	clear: both;
+}
+
+.dashboard {
+	border: 1px solid black;
+	border-radius: 10px;
+	box-shadow: 5px 5px 5px rgb(0,0,0,0.5);
+	max-width: 30%;
+	margin-top: 5px;
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+	background-color: white;
+}
+
+.dashboard .row {
+	margin: auto;
+}
+
+
+.char .bol-lg-4{
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.text {
+	border: 1px solid black;
+	max-width: 30%;
+	border-radius: 5px;
+}
+
+footer {
+	width: 100%;
+	margin-top: 10px;
+	background-color: #3c8dbc;
+	min-height: 20px;
+	color: white;
+	overflow: hidden;
+}
+
+.added {
+	border-top: 2px solid #00c0ef; border-radius: 5px;
+}
+
+.added a {
+	color: #3c8dbc; font-weight: bold;
+}
+
+.added p {
+	color: #999;
+	overflow: hidden;
+}
+
+table tr:hover {
+	background-color: #e8ecd6;
+	box-shadow: 1px 1px 1px rgb(0, 0, 0, 0.5);
+}

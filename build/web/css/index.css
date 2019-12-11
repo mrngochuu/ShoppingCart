@@ -1,0 +1,120 @@
+* {
+	box-sizing: border-box;
+}
+
+body{
+	font-family: "Oswald", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        height: 100%;
+}
+
+
+/* Styles for wrapping the search box */
+
+.main {
+    width: 50%;
+    min-height: 30px;
+    background: black;
+    position: absolute;
+    left: 50%; 
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    padding: 25px;
+	opacity: 0.7;
+	height: 95px;
+}
+
+.main input, .main button {
+	border-radius: 0px;
+}
+
+/* Bootstrap 4 text input with search icon */
+
+.form-control {
+    padding-left: 2.375rem;
+}
+
+.header a {
+	color: #555;
+	font-size: 18px;
+}
+
+.banner {
+	height: auto;
+	margin-bottom: 10px;
+	margin: 0 auto;
+	position: relative;
+	z-index: 1;
+}
+
+.brand a{
+	display: block;	margin-left: auto; margin-right: auto;
+}
+
+.brand:hover{
+	box-shadow: 1px 1px 1px rgb(0,0,0,0.5);
+}
+
+.brand p {
+	min-height: 240px;
+}
+
+.title {
+	text-align: center; font-size: 36px; font-weight: 700px;
+	text-shadow: 1px 1px 1px rgb(0,0,0,0.5);
+}
+
+.address ul{
+	list-style-type: none;
+}
+
+footer {
+	background-color: #d9d9d9;
+	margin-top: 30px;
+}
+
+footer h5 {
+	color: #555;
+	font-weight: 700;
+}
+
+.menu_lv1 {
+	position: relative;
+}
+
+.menu_lv2 {
+	position: absolute;
+	top: 100%;
+	display: none;
+	width: 150px;
+	opacity: 0.8;
+	box-shadow: 1px 1px 1px rgb(0,0,0,0.5);
+}
+
+
+.menu_lv1:hover h5{
+	text-shadow: 1px 1px 1px rgb(0,0,0,0.5);
+}
+
+.menu_lv1:hover .menu_lv2{
+	display: block;
+	z-index: 2;
+}
+
+#demo img{
+	opacity: 0.7;
+}
+
+
+@media screen and (max-width: 800px) {
+	.main {
+		width: 80%;
+	}
+}
+
+@media screen and (max-width: 1200px) {
+	.menu_lv2 {
+		top: 0;
+		left: 100%;
+
+	}
+}
