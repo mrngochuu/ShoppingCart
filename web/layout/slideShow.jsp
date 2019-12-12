@@ -13,13 +13,13 @@
                 <!-- The slideshow -->
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="img/index/real-estate-banner01.jpg" width="100%" height="600">
+                        <img src="img/index/real-estate-banner01.jpg" width="100%" height="400">
                     </div>
                     <div class="carousel-item">
-                        <img src="img/index/real-estate-banner02.jpg" width="100%" height="600">
+                        <img src="img/index/real-estate-banner02.jpg" width="100%" height="400">
                     </div>
                     <div class="carousel-item">
-                        <img src="img/index/real-estate-banner03.jpg" width="100%" height="600">
+                        <img src="img/index/real-estate-banner03.jpg" width="100%" height="400">
                     </div>
                 </div>
 

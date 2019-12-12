@@ -13,6 +13,7 @@ import huudn.daos.StateDAO;
 import huudn.dtos.CategoryDTO;
 import huudn.dtos.CityDTO;
 import huudn.dtos.RealEstateDTO;
+import huudn.dtos.StateDTO;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.List;
@@ -49,29 +50,35 @@ public class SearchProductController extends HttpServlet {
             CityDAO cityDAO = new CityDAO();
             StateDAO stateDAO = new StateDAO();
             CategoryDAO categoryDAO = new CategoryDAO();
-            
+
             List<CategoryDTO> listCategory = (List<CategoryDTO>) session.getAttribute("LIST_CATEGORY");
-            if(listCategory == null) {
+            if (listCategory == null) {
                 listCategory = categoryDAO.getListCategory();
                 session.setAttribute("LIST_CATEGORY", listCategory);
             }
-            
+
             List<CityDTO> listCity = (List<CityDTO>) session.getAttribute("LIST_CITY");
-            if(listCity == null) {
+            if (listCity == null) {
                 listCity = cityDAO.getListCity();
                 session.setAttribute("LIST_CITY", listCity);
             }
-            
+
             String titleStr = request.getParameter("txtSearch");
             String categoryStr = request.getParameter("cbCategory");
             String cityStr = request.getParameter("cbCity");
             String stateStr = request.getParameter("cbState");
-            
-            if ((titleStr == null && categoryStr == null && cityStr == null && stateStr == null) || (titleStr.equals("") && categoryStr.equals("0-type")) && cityStr.equals("0-city") && stateStr.equals("0-state")) {
+            if (cityStr != null) {
+                if (cityStr.equals("0")) {
+                    session.removeAttribute("LIST_STATE");
+                }
+            }
+
+            if ((titleStr == null && categoryStr == null && cityStr == null && stateStr == null) || (titleStr.equals("") && categoryStr.equals("0")) && cityStr.equals("0") && stateStr.equals("0")) {
+
                 List<RealEstateDTO> listHouse = realEstateDAO.getListRealEstate(1);
                 List<RealEstateDTO> listVilla = realEstateDAO.getListRealEstate(2);
                 List<RealEstateDTO> listApartment = realEstateDAO.getListRealEstate(3);
-                
+
                 //get First images of all list
                 Hashtable<Integer, String> houseImages = new Hashtable<>();
                 for (RealEstateDTO realEstateDTO : listHouse) {
@@ -103,14 +110,32 @@ public class SearchProductController extends HttpServlet {
                 request.setAttribute("APARTMENT", listApartment);
                 request.setAttribute("APARTMENT_IMAGE", apartmentImages);
             } else {
-                String searchStr = "title:" + titleStr +",category:"+ categoryStr + ",";
-                if(cityStr != null) {
-                    searchStr += "city:" + cityStr +",";
+                // fill in State search
+                if (!cityStr.equals("0")) {
+                    List<StateDTO> listState = stateDAO.getListState(Integer.parseInt(cityStr));
+                    session.setAttribute("LIST_STATE", listState);
                 }
-                if(stateStr != null) {
-                    searchStr += "state:" + stateStr;
+
+                String searchStr = titleStr + "," + categoryStr;
+                if (!cityStr.equals("0") && stateStr.equals("0")) {
+                    List<StateDTO> listState = stateDAO.getListState(Integer.parseInt(cityStr));
+                    for (StateDTO stateDTO : listState) {
+                        searchStr += "," + stateDTO.getStateID();
+                    }
+                } else {
+                    searchStr += "," + stateStr;
+                }
+                List<RealEstateDTO> listRealEstate = realEstateDAO.fintListByTxtSearch(searchStr);
+                Hashtable<Integer, String> realEstateImages = new Hashtable<>();
+                for (RealEstateDTO realEstateDTO : listRealEstate) {
+                    String imageURL = realEstateImageDAO.getFirstImage(realEstateDTO.getRealEstateID());
+                    if (imageURL != null) {
+                        realEstateImages.put(realEstateDTO.getRealEstateID(), imageURL);
+                    }
                 }
                 
+                request.setAttribute("REAL_ESTATE", listRealEstate);
+                request.setAttribute("REAL_ESTATE_IMAGE", realEstateImages);
             }
         } catch (Exception e) {
             log("ERROR at SearchProductController: " + e.getMessage());
@@ -118,6 +143,7 @@ public class SearchProductController extends HttpServlet {
             request.getRequestDispatcher(SUCCESS).forward(request, response);
         }
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

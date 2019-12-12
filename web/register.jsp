@@ -29,7 +29,10 @@
 
                             <hr class="my-4">
                             <div class="mb-3">
-                                <a href="index.jsp">Home Page</a>
+                                <c:url var="homeLink" value="MainController">
+                                    <c:param name="action" value="SearchProduct"/>
+                                </c:url>
+                                <a href="${homeLink}">Home Page</a>
                             </div>
                             <div class="mb-3">
                                 <a href="login.jsp">Login</a>

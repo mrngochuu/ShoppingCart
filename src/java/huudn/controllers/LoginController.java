@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
  */
 public class LoginController extends HttpServlet {
     private static final String ERROR = "error.jsp";
-    private static final String SUCCESS = "index.jsp";
+    private static final String SUCCESS = "SearchProductController";
     private static final String INVALID = "login.jsp";
     
     

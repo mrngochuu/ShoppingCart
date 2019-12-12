@@ -5,6 +5,7 @@
  */
 package huudn.controllers;
 
+import huudn.daos.RealEstateDAO;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,18 +16,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ngochuu
  */
-public class MainController extends HttpServlet {
+public class DeleteProductController extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
-    private static final String LOGIN = "LoginController";
-    private static final String REGISTER = "RegisterController";
-    private static final String SHOW_INFO = "ShowInfoController";
-    private static final String UPDATE_INFO = "UpdateInfoController";
-    private static final String CHANGE_CITY = "ChangeCityController";
-    private static final String DELETE_PRODUCT = "DeleteProductController";
-    private static final String SHOW_PRODUCT_DETAILS = "ShowProductDetailsController";
-    private static final String SEARCH_PRODUCT = "SearchProductController";
-    private static final String LOGOUT = "LogoutController";
+    private static final String SUCCESS = "SearchProductController";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,29 +35,15 @@ public class MainController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String action = request.getParameter("action");
-            
-            if (action.equals("Login")) {
-                url = LOGIN;
-            } else if (action.equals("Register")) {
-                url = REGISTER;
-            } else if (action.equals("ShowInfo")) {
-                url = SHOW_INFO;
-            } else if (action.equals("ShowProductDetails")) {
-                url = SHOW_PRODUCT_DETAILS;
-            } else if (action.equals("DeleteProduct")) {
-                url = DELETE_PRODUCT;
-            } else if (action.equals("SearchProduct")) {
-                url = SEARCH_PRODUCT;
-            } else if (action.equals("ChangeCity")) {
-                url = CHANGE_CITY;
-            } else if (action.equals("Logout")) {
-                url = LOGOUT;
+            int realEstateID = Integer.parseInt(request.getParameter("realEstateID"));
+            RealEstateDAO realEstateDAO = new RealEstateDAO();
+            if(realEstateDAO.delete(realEstateID)) {
+                url = SUCCESS;
             } else {
-                request.setAttribute("ERROR", "Action is invalid!");
+                request.setAttribute("ERROR", "Delete failed!");
             }
         } catch (Exception e) {
-            log("ERROR at MainController: " + e.getMessage());
+            log("ERROR at DeleteProductController: " + e.getMessage());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

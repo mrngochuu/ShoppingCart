@@ -54,10 +54,11 @@
                 <p>PostTime: <%= time%></p>
                 <hr>
                 <form action="MainController" method="GET" >
-                    <button name="action" value="AddToCart" class="btn btn-dark">Add To Cart</button>
-                    <c:if test="${sessionScope.ROLE.roleName eq 'admin'}">
-                        <button name="action" value="DeleteRealEstate" class="btn btn-dark">Delete</button>
-                        <button name="action" value="EditRealEstate" class="btn btn-dark">Edit</button>
+                    <c:if test="${sessionScope.ROLE.roleName ne 'admin'}" var="isAdmin"></c:if>
+                        <button name="action" value="AddToCart" class="btn btn-dark">Add To Cart</button>
+                    <c:if test="${!isAdmin}">
+                        <button name="action" value="DeleteProduct" class="btn btn-dark">Delete</button>
+                        <button name="action" value="EditProduct" class="btn btn-dark">Edit</button>
                     </c:if>
                     <input type="hidden" name="realEstateID" value="${requestScope.REAL_ESTATE_DTO.realEstateID}">
                 </form>

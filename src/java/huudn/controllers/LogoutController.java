@@ -10,23 +10,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author ngochuu
  */
-public class MainController extends HttpServlet {
-
-    private static final String ERROR = "error.jsp";
-    private static final String LOGIN = "LoginController";
-    private static final String REGISTER = "RegisterController";
-    private static final String SHOW_INFO = "ShowInfoController";
-    private static final String UPDATE_INFO = "UpdateInfoController";
-    private static final String CHANGE_CITY = "ChangeCityController";
-    private static final String DELETE_PRODUCT = "DeleteProductController";
-    private static final String SHOW_PRODUCT_DETAILS = "ShowProductDetailsController";
-    private static final String SEARCH_PRODUCT = "SearchProductController";
-    private static final String LOGOUT = "LogoutController";
+public class LogoutController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,33 +30,13 @@ public class MainController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
         try {
-            String action = request.getParameter("action");
-            
-            if (action.equals("Login")) {
-                url = LOGIN;
-            } else if (action.equals("Register")) {
-                url = REGISTER;
-            } else if (action.equals("ShowInfo")) {
-                url = SHOW_INFO;
-            } else if (action.equals("ShowProductDetails")) {
-                url = SHOW_PRODUCT_DETAILS;
-            } else if (action.equals("DeleteProduct")) {
-                url = DELETE_PRODUCT;
-            } else if (action.equals("SearchProduct")) {
-                url = SEARCH_PRODUCT;
-            } else if (action.equals("ChangeCity")) {
-                url = CHANGE_CITY;
-            } else if (action.equals("Logout")) {
-                url = LOGOUT;
-            } else {
-                request.setAttribute("ERROR", "Action is invalid!");
-            }
+            HttpSession sesion = request.getSession();
+            sesion.invalidate();
         } catch (Exception e) {
-            log("ERROR at MainController: " + e.getMessage());
+            log("ERROR at LogoutController: " + e.getMessage());
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            response.sendRedirect("SearchProductController");
         }
     }
 
