@@ -24,6 +24,7 @@ public class MainController extends HttpServlet {
     private static final String UPDATE_INFO = "UpdateInfoController";
     private static final String CHANGE_CITY = "ChangeCityController";
     private static final String SHOW_PRODUCT_DETAILS = "ShowProductDetailsController";
+    private static final String SEARCH_PRODUCT = "SearchProductController";
     private static final String LOGOUT = "LogoutController";
 
     /**
@@ -50,6 +51,8 @@ public class MainController extends HttpServlet {
                 url = SHOW_INFO;
             } else if (action.equals("ShowProductDetails")) {
                 url = SHOW_PRODUCT_DETAILS;
+            } else if (action.equals("SearchProduct")) {
+                url = SEARCH_PRODUCT;
             } else if (action.equals("ChangeCity")) {
                 url = CHANGE_CITY;
             } else if (action.equals("Logout")) {
