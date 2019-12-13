@@ -5,30 +5,27 @@
  */
 package huudn.controllers;
 
+import huudn.daos.Order_RealEstateDAO;
+import huudn.daos.RealEstateDAO;
+import huudn.daos.RealEstateImageDAO;
+import huudn.dtos.OrderDTO;
+import huudn.dtos.RealEstateDTO;
 import java.io.IOException;
+import java.util.Hashtable;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author ngochuu
  */
-public class MainController extends HttpServlet {
+public class ShowCartController extends HttpServlet {
 
-    private static final String ERROR = "error.jsp";
-    private static final String LOGIN = "LoginController";
-    private static final String REGISTER = "RegisterController";
-    private static final String SHOW_INFO = "ShowInfoController";
-    private static final String UPDATE_INFO = "UpdateInfoController";
-    private static final String CHANGE_CITY = "ChangeCityController";
-    private static final String DELETE_PRODUCT = "DeleteProductController";
-    private static final String SHOW_PRODUCT_DETAILS = "ShowProductDetailsController";
-    private static final String SEARCH_PRODUCT = "SearchProductController";
-    private static final String ADD_TO_CART = "AddToCartController";
-    private static final String LOGOUT = "LogoutController";
-    private static final String SHOW_CART = "ShowCartController";
+    public static final String SUCCESS = "cart.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,37 +39,31 @@ public class MainController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
         try {
-            String action = request.getParameter("action");
-            
-            if (action.equals("Login")) {
-                url = LOGIN;
-            } else if (action.equals("Register")) {
-                url = REGISTER;
-            } else if (action.equals("ShowInfo")) {
-                url = SHOW_INFO;
-            } else if (action.equals("ShowProductDetails")) {
-                url = SHOW_PRODUCT_DETAILS;
-            } else if (action.equals("AddToCart")) {
-                url = ADD_TO_CART;
-            } else if (action.equals("ShowCart")) {
-                url = SHOW_CART;
-            } else if (action.equals("DeleteProduct")) {
-                url = DELETE_PRODUCT;
-            } else if (action.equals("SearchProduct")) {
-                url = SEARCH_PRODUCT;
-            } else if (action.equals("ChangeCity")) {
-                url = CHANGE_CITY;
-            } else if (action.equals("Logout")) {
-                url = LOGOUT;
-            } else {
-                request.setAttribute("ERROR", "Action is invalid!");
+            HttpSession session = request.getSession();
+            OrderDTO orderDTO = (OrderDTO) session.getAttribute("CART");
+            if (orderDTO != null) {
+                RealEstateDAO realEstateDAO = new RealEstateDAO();
+                Order_RealEstateDAO order_RealEstateDAO = new Order_RealEstateDAO();
+                List<Integer> listRealEstateID = order_RealEstateDAO.getListProduct(orderDTO.getOrderID());
+                List<RealEstateDTO> listRealEstate = realEstateDAO.getListRealEstateByID(listRealEstateID);
+                request.setAttribute("REAL_ESTATE", listRealEstate);
+                if (listRealEstate.size() > 0) {
+                    RealEstateImageDAO realEstateImageDAO = new RealEstateImageDAO();
+                    Hashtable<Integer, String> realEstateImages = new Hashtable<>();
+                    for (RealEstateDTO realEstateDTO : listRealEstate) {
+                        String imageURL = realEstateImageDAO.getFirstImage(realEstateDTO.getRealEstateID());
+                        if (imageURL != null) {
+                            realEstateImages.put(realEstateDTO.getRealEstateID(), imageURL);
+                        }
+                    }
+                    request.setAttribute("REAL_ESTATE_IMAGE", realEstateImages);
+                }
             }
         } catch (Exception e) {
-            log("ERROR at MainController: " + e.getMessage());
+
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+
         }
     }
 

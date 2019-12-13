@@ -36,6 +36,14 @@
         <servlet-name>LogoutController</servlet-name>
         <servlet-class>huudn.controllers.LogoutController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddToCartController</servlet-name>
+        <servlet-class>huudn.controllers.AddToCartController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowCartController</servlet-name>
+        <servlet-class>huudn.controllers.ShowCartController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -71,6 +79,14 @@
     <servlet-mapping>
         <servlet-name>LogoutController</servlet-name>
         <url-pattern>/LogoutController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddToCartController</servlet-name>
+        <url-pattern>/AddToCartController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowCartController</servlet-name>
+        <url-pattern>/ShowCartController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

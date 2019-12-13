@@ -75,40 +75,45 @@ public class SearchProductController extends HttpServlet {
 
             if ((titleStr == null && categoryStr == null && cityStr == null && stateStr == null) || (titleStr.equals("") && categoryStr.equals("0")) && cityStr.equals("0") && stateStr.equals("0")) {
 
-                List<RealEstateDTO> listHouse = realEstateDAO.getListRealEstate(1);
-                List<RealEstateDTO> listVilla = realEstateDAO.getListRealEstate(2);
-                List<RealEstateDTO> listApartment = realEstateDAO.getListRealEstate(3);
-
-                //get First images of all list
-                Hashtable<Integer, String> houseImages = new Hashtable<>();
-                for (RealEstateDTO realEstateDTO : listHouse) {
-                    String imageURL = realEstateImageDAO.getFirstImage(realEstateDTO.getRealEstateID());
-                    if (imageURL != null) {
-                        houseImages.put(realEstateDTO.getRealEstateID(), imageURL);
-                    }
-                }
-
-                Hashtable<Integer, String> villaImages = new Hashtable<>();
-                for (RealEstateDTO realEstateDTO : listVilla) {
-                    String imageURL = realEstateImageDAO.getFirstImage(realEstateDTO.getRealEstateID());
-                    if (imageURL != null) {
-                        villaImages.put(realEstateDTO.getRealEstateID(), imageURL);
-                    }
-                }
-
-                Hashtable<Integer, String> apartmentImages = new Hashtable<>();
-                for (RealEstateDTO realEstateDTO : listApartment) {
-                    String imageURL = realEstateImageDAO.getFirstImage(realEstateDTO.getRealEstateID());
-                    if (imageURL != null) {
-                        apartmentImages.put(realEstateDTO.getRealEstateID(), imageURL);
-                    }
-                }
+                List<RealEstateDTO> listHouse = realEstateDAO.getListRealEstateByCategoryID(1);
                 request.setAttribute("HOUSE", listHouse);
-                request.setAttribute("HOUSE_IMAGE", houseImages);
+                //get First images of all list
+                if (listHouse.size() > 0) {
+                    Hashtable<Integer, String> houseImages = new Hashtable<>();
+                    for (RealEstateDTO realEstateDTO : listHouse) {
+                        String imageURL = realEstateImageDAO.getFirstImage(realEstateDTO.getRealEstateID());
+                        if (imageURL != null) {
+                            houseImages.put(realEstateDTO.getRealEstateID(), imageURL);
+                        }
+                    }
+                    request.setAttribute("HOUSE_IMAGE", houseImages);
+                }
+
+                List<RealEstateDTO> listVilla = realEstateDAO.getListRealEstateByCategoryID(2);
                 request.setAttribute("VILLA", listVilla);
-                request.setAttribute("VILLA_IMAGE", villaImages);
+                if (listVilla.size() > 0) {
+                    Hashtable<Integer, String> villaImages = new Hashtable<>();
+                    for (RealEstateDTO realEstateDTO : listVilla) {
+                        String imageURL = realEstateImageDAO.getFirstImage(realEstateDTO.getRealEstateID());
+                        if (imageURL != null) {
+                            villaImages.put(realEstateDTO.getRealEstateID(), imageURL);
+                        }
+                    }
+                    request.setAttribute("VILLA_IMAGE", villaImages);
+                }
+
+                List<RealEstateDTO> listApartment = realEstateDAO.getListRealEstateByCategoryID(3);
                 request.setAttribute("APARTMENT", listApartment);
-                request.setAttribute("APARTMENT_IMAGE", apartmentImages);
+                if (listApartment.size() > 0) {
+                    Hashtable<Integer, String> apartmentImages = new Hashtable<>();
+                    for (RealEstateDTO realEstateDTO : listApartment) {
+                        String imageURL = realEstateImageDAO.getFirstImage(realEstateDTO.getRealEstateID());
+                        if (imageURL != null) {
+                            apartmentImages.put(realEstateDTO.getRealEstateID(), imageURL);
+                        }
+                    }
+                    request.setAttribute("APARTMENT_IMAGE", apartmentImages);
+                }
             } else {
                 // fill in State search
                 if (!cityStr.equals("0")) {
@@ -126,16 +131,17 @@ public class SearchProductController extends HttpServlet {
                     searchStr += "," + stateStr;
                 }
                 List<RealEstateDTO> listRealEstate = realEstateDAO.fintListByTxtSearch(searchStr);
-                Hashtable<Integer, String> realEstateImages = new Hashtable<>();
-                for (RealEstateDTO realEstateDTO : listRealEstate) {
-                    String imageURL = realEstateImageDAO.getFirstImage(realEstateDTO.getRealEstateID());
-                    if (imageURL != null) {
-                        realEstateImages.put(realEstateDTO.getRealEstateID(), imageURL);
-                    }
-                }
-                
                 request.setAttribute("REAL_ESTATE", listRealEstate);
-                request.setAttribute("REAL_ESTATE_IMAGE", realEstateImages);
+                if (listRealEstate.size() > 0) {
+                    Hashtable<Integer, String> realEstateImages = new Hashtable<>();
+                    for (RealEstateDTO realEstateDTO : listRealEstate) {
+                        String imageURL = realEstateImageDAO.getFirstImage(realEstateDTO.getRealEstateID());
+                        if (imageURL != null) {
+                            realEstateImages.put(realEstateDTO.getRealEstateID(), imageURL);
+                        }
+                    }
+                    request.setAttribute("REAL_ESTATE_IMAGE", realEstateImages);
+                }
             }
         } catch (Exception e) {
             log("ERROR at SearchProductController: " + e.getMessage());

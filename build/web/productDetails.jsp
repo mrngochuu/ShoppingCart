@@ -51,17 +51,19 @@
                 <%
                     String time = new SimpleDateFormat("dd/MM/yyyy").format(((RealEstateDTO) request.getAttribute("REAL_ESTATE_DTO")).getPostTime());
                 %>
-                <p>PostTime: <%= time%></p>
+                <p class="mb-3">Post Time: <%= time%></p>
                 <hr>
-                <form action="MainController" method="GET" >
-                    <c:if test="${sessionScope.ROLE.roleName ne 'admin'}" var="isAdmin"></c:if>
+                <form action="MainController" method="POST" >
+                    <c:if test="${sessionScope.ROLE.roleName ne 'admin'}" var="isAdmin">
                         <button name="action" value="AddToCart" class="btn btn-dark">Add To Cart</button>
+                    </c:if>
                     <c:if test="${!isAdmin}">
                         <button name="action" value="DeleteProduct" class="btn btn-dark">Delete</button>
                         <button name="action" value="EditProduct" class="btn btn-dark">Edit</button>
                     </c:if>
                     <input type="hidden" name="realEstateID" value="${requestScope.REAL_ESTATE_DTO.realEstateID}">
                 </form>
+                <font color="red"><p class="mt-3">${requestScope.MESSAGE}</p></font>
             </div>
         </div>
         <%@include file="layout/footer.jsp" %>

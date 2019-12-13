@@ -5,10 +5,14 @@
  */
 package huudn.daos;
 
+import huudn.dtos.Order_RealEstateDTO;
+import huudn.utils.DatabaseUtils;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -23,5 +27,60 @@ public class Order_RealEstateDAO implements Serializable {
         if(rs != null) rs.close();
         if(pstm != null) pstm.close();
         if(conn != null) conn.close();
+    }
+    
+    public boolean insertToCart(int orderID, int realEstateID) throws Exception {
+        boolean check = false;
+        try {
+            conn = DatabaseUtils.getConnection();
+            if(conn != null) {
+                String sql = "INSERT INTO tblOrders_RealEstates VALUES (?,?)";
+                pstm = conn.prepareStatement(sql);
+                pstm.setInt(1, orderID);
+                pstm.setInt(2, realEstateID);
+                check = pstm.executeUpdate() > 0;
+            }
+        } finally {
+            closeConnection();
+        }
+        return check;
+    }
+    
+    public boolean checkExistedInCart(int orderID, int realEstateID) throws Exception {
+        boolean check = false;
+        try {
+            conn = DatabaseUtils.getConnection();
+            if(conn != null) {
+                String sql = "SELECT realEstateID FROM tblOrders_RealEstates WHERE orderID = ? AND realEstateID = ?";
+                pstm = conn.prepareStatement(sql);
+                pstm.setInt(1, orderID);
+                pstm.setInt(2, realEstateID);
+                rs = pstm.executeQuery();
+                check = rs.next();
+            }
+        } finally {
+            closeConnection();
+        }
+        return check;
+    }
+    
+    public List<Integer> getListProduct (int orderID) throws Exception {
+        List<Integer> list = null;
+        try {
+            conn = DatabaseUtils.getConnection();
+            if(conn != null) {
+                String sql = "SELECT realEstateID FROM tblOrders_RealEstates WHERE orderID = ?";
+                pstm = conn.prepareStatement(sql);
+                pstm.setInt(1, orderID);
+                rs = pstm.executeQuery();
+                list = new ArrayList<>();
+                while(rs.next()) {
+                    list.add(rs.getInt("realEstateID"));
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return list;
     }
 }

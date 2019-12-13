@@ -37,7 +37,7 @@ public class RealEstateDAO implements Serializable {
         }
     }
 
-    public List<RealEstateDTO> getListRealEstate(int categoryID) throws Exception {
+    public List<RealEstateDTO> getListRealEstateByCategoryID(int categoryID) throws Exception {
         List<RealEstateDTO> list = null;
         try {
             conn = DatabaseUtils.getConnection();
@@ -92,11 +92,44 @@ public class RealEstateDAO implements Serializable {
         return dto;
     }
 
+    public List<RealEstateDTO> getListRealEstateByID(List<Integer> listRealEstateID) throws Exception {
+        List<RealEstateDTO> list = null;
+        if (listRealEstateID.size() > 0) {
+            try {
+                conn = DatabaseUtils.getConnection();
+                if (conn != null) {
+                    String sql = "SELECT realEstateID, title, area, price FROM tblRealEstates WHERE isactive = ? AND (realEstateID = ?";
+
+                    for (int i = 1; i < listRealEstateID.size(); i++) {
+                        sql += " OR realEstateID = " + listRealEstateID.get(i);
+                    }
+                    sql += ")";
+                    pstm = conn.prepareStatement(sql);
+                    pstm.setBoolean(1, true);
+                    pstm.setInt(2, listRealEstateID.get(0));
+                    rs = pstm.executeQuery();
+                    list = new ArrayList<>();
+                    while (rs.next()) {
+                        RealEstateDTO dto = new RealEstateDTO();
+                        dto.setRealEstateID(rs.getInt("realEstateID"));
+                        dto.setTitle(rs.getString("title"));
+                        dto.setArea(rs.getFloat("area"));
+                        dto.setPrice(rs.getInt("price"));
+                        list.add(dto);
+                    }
+                }
+            } finally {
+                closeConnection();
+            }
+        }
+        return list;
+    }
+
     public boolean delete(int realEstateID) throws Exception {
         boolean check = false;
         try {
             conn = DatabaseUtils.getConnection();
-            if(conn != null) {
+            if (conn != null) {
                 String sql = "UPDATE tblRealEstates SET isActive = ? WHERE realEstateID = ?";
                 pstm = conn.prepareStatement(sql);
                 pstm.setBoolean(1, false);
@@ -170,6 +203,25 @@ public class RealEstateDAO implements Serializable {
             closeConnection();
         }
         return list;
+    }
+
+    public boolean checkSoldout(int realEstateID) throws Exception {
+        boolean check = false;
+        try {
+            conn = DatabaseUtils.getConnection();
+            if (conn != null) {
+                String sql = "SELECT isActive FROM tblRealEstates WHERE realEstateID = ?";
+                pstm = conn.prepareStatement(sql);
+                pstm.setInt(1, realEstateID);
+                rs = pstm.executeQuery();
+                if (rs.next()) {
+                    check = rs.getBoolean("isActive");
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return check;
     }
 
 }

@@ -6,12 +6,10 @@
 package huudn.controllers;
 
 import huudn.daos.OrderDAO;
-import huudn.daos.RoleDAO;
-import huudn.daos.UserDAO;
+import huudn.daos.Order_RealEstateDAO;
+import huudn.daos.RealEstateDAO;
 import huudn.dtos.OrderDTO;
-import huudn.dtos.RoleDTO;
 import huudn.dtos.UserDTO;
-import huudn.dtos.UserErrorObject;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,11 +21,10 @@ import javax.servlet.http.HttpSession;
  *
  * @author ngochuu
  */
-public class LoginController extends HttpServlet {
+public class AddToCartController extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
-    private static final String SUCCESS = "SearchProductController";
-    private static final String INVALID = "login.jsp";
+    private static final String SUCCESS = "ShowProductDetailsController";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,57 +38,33 @@ public class LoginController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
         try {
-            String username = request.getParameter("txtUsername");
-            String password = request.getParameter("txtPassword");
-            UserErrorObject errorObj = new UserErrorObject();
-            boolean valid = true;
-            if (username.isEmpty()) {
-                errorObj.setUsernameError("Username is required!");
-                valid = false;
-            }
-
-            if (password.isEmpty()) {
-                errorObj.setPasswordError("Password is required!");
-                valid = false;
-            }
-
-            if (valid) {
-                UserDAO userDAO = new UserDAO();
-                int roleID;
-                if ((roleID = userDAO.checkLogin(username, password)) != 0) {
-                    HttpSession session = request.getSession();
-                    url = SUCCESS;
-                    RoleDAO roleDAO = new RoleDAO();
-                    RoleDTO roleDTO = roleDAO.getRoleNameByID(roleID);
-                    UserDTO userDTO = userDAO.findUserIDByUsername(username);
-                    if (roleDTO.equals("user")) {
-                        OrderDAO orderDAO = new OrderDAO();
-                        OrderDTO orderDTO = orderDAO.findOrderByUserID(userDTO.getUserID());
-                        //if cart is null create new cart
-                        if (orderDTO == null) {
-                            if (orderDAO.createOrderByUserID(userDTO.getUserID())) {
-                                orderDTO = orderDAO.findOrderByUserID(userDTO.getUserID());
-                            }
+            int realEstateID = Integer.parseInt(request.getParameter("realEstateID"));
+            RealEstateDAO realEstateDAO = new RealEstateDAO();
+            if (realEstateDAO.checkSoldout(realEstateID)) {
+                HttpSession session = request.getSession();
+                UserDTO userDTO = (UserDTO) session.getAttribute("USER");
+                OrderDTO orderDTO = (OrderDTO) session.getAttribute("CART");
+                if (orderDTO != null) {
+                    Order_RealEstateDAO order_RealEstateDAO = new Order_RealEstateDAO();
+                    // check existed in cart
+                    if (order_RealEstateDAO.checkExistedInCart(orderDTO.getOrderID(), realEstateID)) {
+                        request.setAttribute("MESSAGE", "Already added!");
+                    } else {
+                        if (order_RealEstateDAO.insertToCart(orderDTO.getOrderID(), realEstateID)) {
+                            request.setAttribute("MESSAGE", "Add to your cart is successful!");
+                        } else {
+                            request.setAttribute("MESSAGE", "Add to your cart is failed!");
                         }
-                        session.setAttribute("CART", orderDTO);
                     }
-                    
-                    session.setAttribute("USER", userDTO);
-                    session.setAttribute("ROLE", roleDTO);
-                } else {
-                    url = INVALID;
-                    request.setAttribute("INVALID", "Invalid username or password!");
                 }
             } else {
-                url = INVALID;
-                request.setAttribute("VALIDATE", errorObj);
+                request.setAttribute("MESSAGE", "The real estate sold out!");
             }
         } catch (Exception e) {
-            log("ERROR at LoginController: " + e.getMessage());
+            log("ERROR at AddToCartController: " + e.getMessage());
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            request.getRequestDispatcher(SUCCESS).forward(request, response);
         }
     }
 
