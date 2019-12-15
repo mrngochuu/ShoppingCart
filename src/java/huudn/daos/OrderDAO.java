@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Calendar;
 
 /**
  *
@@ -64,5 +65,24 @@ public class OrderDAO implements Serializable {
             closeConnection();
         }
         return true;
+    }
+    
+    public boolean checkOutOrder(int orderID, int total) throws Exception {
+        boolean check = false;
+        try {
+            conn = DatabaseUtils.getConnection();
+            if(conn != null) {
+                String sql = "Update tblOrders SET isCheckout = ?, dateCheckout = ?, total = ? WHERE orderID = ?";
+                pstm = conn.prepareStatement(sql);
+                pstm.setBoolean(1, true);
+                pstm.setDate(2, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+                pstm.setInt(3, total);
+                pstm.setInt(4, orderID);
+                check = pstm.executeUpdate() > 0;
+            }
+        } finally {
+            closeConnection();
+        }
+        return check;
     }
 }

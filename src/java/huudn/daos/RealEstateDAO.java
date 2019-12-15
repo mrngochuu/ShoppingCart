@@ -98,15 +98,13 @@ public class RealEstateDAO implements Serializable {
             try {
                 conn = DatabaseUtils.getConnection();
                 if (conn != null) {
-                    String sql = "SELECT realEstateID, title, area, price FROM tblRealEstates WHERE isactive = ? AND (realEstateID = ?";
+                    String sql = "SELECT realEstateID, title, area, price, isActive FROM tblRealEstates WHERE realEstateID = ?";
 
                     for (int i = 1; i < listRealEstateID.size(); i++) {
                         sql += " OR realEstateID = " + listRealEstateID.get(i);
                     }
-                    sql += ")";
                     pstm = conn.prepareStatement(sql);
-                    pstm.setBoolean(1, true);
-                    pstm.setInt(2, listRealEstateID.get(0));
+                    pstm.setInt(1, listRealEstateID.get(0));
                     rs = pstm.executeQuery();
                     list = new ArrayList<>();
                     while (rs.next()) {
@@ -115,6 +113,7 @@ public class RealEstateDAO implements Serializable {
                         dto.setTitle(rs.getString("title"));
                         dto.setArea(rs.getFloat("area"));
                         dto.setPrice(rs.getInt("price"));
+                        dto.setActive(rs.getBoolean("isActive"));
                         list.add(dto);
                     }
                 }

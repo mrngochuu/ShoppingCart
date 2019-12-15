@@ -66,7 +66,7 @@ public class LoginController extends HttpServlet {
                     RoleDAO roleDAO = new RoleDAO();
                     RoleDTO roleDTO = roleDAO.getRoleNameByID(roleID);
                     UserDTO userDTO = userDAO.findUserIDByUsername(username);
-                    if (roleDTO.equals("user")) {
+                    if (roleDTO.getRoleName().equals("user")) {
                         OrderDAO orderDAO = new OrderDAO();
                         OrderDTO orderDTO = orderDAO.findOrderByUserID(userDTO.getUserID());
                         //if cart is null create new cart

@@ -22,57 +22,101 @@
     </head>
     <body>
         <%@include file="layout/header.jsp" %>
+        <c:url var="showHomeLink" value="MainController">
+            <c:param name="action" value="SearchProduct"/>
+        </c:url>
+
         <div class="container mt-lg-4">
             <h2>Your shopping cart</h2>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th style="width: 50%;">Product</th>
-                        <th style="width: 8%;">Price</th>
-                        <th style="width: 8%;">Quantity</th>
-                        <th style="width: 22%; text-align: center;">Subtotal</th>
-                        <th style="width: 12%"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:if test="${not empty requestScope.REAL_ESTATE}" var="NoProduct">
+            <c:if test="${not empty requestScope.REAL_ESTATE}" var="NoProduct">
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width: 70%;">Real Estate</th>
+                            <th style="width: 5%;">Area</th>
+                            <th style="width: 10%;">Price</th>
+                            <th style="width: 5%;">State</th>
+                            <th style="width: 10%;">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:set var="total" value="${0}"/>
+                        <c:set var="allowPayment" value="${true}"/>
+                        <c:set var="realEstatePaymentStr" value="" />
                         <c:forEach items="${requestScope.REAL_ESTATE}" var="realEstateDTO">
                             <tr>
                                 <td>
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <img src="img/product/${requestScope.REAL_ESTATE_IMAGE[realEstateDTO.realEstateID]}" width="100" height="100">
+                                            <img src="img/product/${requestScope.REAL_ESTATE_IMAGE[realEstateDTO.realEstateID]}" width="80" height="80">
                                         </div>
                                         <div class="col-sm-7">
                                             <h4>${realEstateDTO.title}</h4>
                                         </div>
                                     </div>
                                 </td>
-                            <td>$4,070</td>
-                            <td><input type="number" class="form-control text-center" value="1" min="0" max="10" id="number-01" onclick="changePrice(4070, 'number-01', 'total-01')"></td>
-                            <td class="text-center">$<span id="total-01">4,070</span></td>
-                            <td class="active"><button class="btn btn-danger btn-sm">Remove</button></td>
+                                <td>${realEstateDTO.area}</td>
+                                <td>
+                                    $${realEstateDTO.price}
+                                    <c:set var="total" value="${total + realEstateDTO.price}"/>
+                                </td>
+                                <td>
+                                    <c:if test="${realEstateDTO.active}">
+                                        <font color="green">Available</font>
+                                        <c:set var="realEstatePaymentStr" value="${realEstatePaymentStr += realEstateDTO.realEstateID}-"/>
+                                    </c:if>
+                                    <c:if test="${!realEstateDTO.active}">
+                                        <font color="red">Sold-out</font>
+                                        <c:set var="allowPayment" value="${false}"/>
+                                    </c:if>   
+                                </td>
+                                <td class="active">
+                                    <c:url var="DeleteFromCartLink" value="MainController" >
+                                        <c:param name="action" value="DeleteFromCart"/>
+                                        <c:param name="realEstateID" value="${realEstateDTO.realEstateID}"/>
+                                    </c:url>
+                                    <a href="${DeleteFromCartLink}" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>
+                                <a href="${showHomeLink}" class="btn btn-warning">&lsaquo; Return Home Page</a>
+                            </td>
+                            <td colspan="1"><strong>Total</strong></td>
+                            <td class="text-center"><strong>$<span id="total_">${total}</span></strong></td>
+                            <td colspan="1"></td>
+                            <td>
+                                <c:if test="${allowPayment}">
+                                    <c:url var="PaymentLink" value="MainController">
+                                        <c:param name="action" value="Payment" />
+                                        <c:param name="listRealEstate" value="${realEstatePaymentStr}"/>
+                                        <c:param name="Total" value="${total}"/>
+                                    </c:url>
+                                    <a href="${PaymentLink}" class="btn btn-info">Payment</a>
+                                </c:if>
+
+                            </td>
                         </tr>
-                    </c:forEach>
-                </c:if>
-                <c:if test="${!NoProduct}}">
+                        <tr>
+                            <td colspan="1"></td>
+                            <td colspan="4">
+                                <c:if test="${!allowPayment}">
+                                    <font color="red">Delete all Real Estate sold out to payment! </font>
+                                </c:if>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </c:if>
+            <c:if test="${!NoProduct}">
                 <h4>No Real Estate added!</h4>
+                <a href="${showHomeLink}" class="btn btn-warning">&lsaquo; Return Home Page</a>
             </c:if> 
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td>
-                        <a href="index.html" class="btn btn-warning">&lsaquo; Return Home Page</a>
-                    </td>
-                    <td colspan="2"></td>
-                    <td class="text-center"><strong>Total $<span id="total_">6,169</span></strong></td>
-                    <td>
-                        <a href="#" class="btn btn-info">Payment</a>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-    <%@include file="layout/footer.jsp" %>
-</body>
+        </div>
+        <%@include file="layout/footer.jsp" %>
+    </body>
 </html>

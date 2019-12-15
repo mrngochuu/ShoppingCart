@@ -5,7 +5,6 @@
  */
 package huudn.daos;
 
-import huudn.dtos.RoleDTO;
 import huudn.dtos.UserDTO;
 import huudn.utils.DatabaseUtils;
 import huudn.utils.MyUtils;
@@ -81,10 +80,11 @@ public class UserDAO implements Serializable {
         try {
             conn = DatabaseUtils.getConnection();
             if (conn != null) {
-                String sql = "SELECT roleID FROM tblUsers WHERE username = ? AND password = ?";
+                String sql = "SELECT roleID FROM tblUsers WHERE username = ? AND password = ? AND isActive = ?";
                 pstm = conn.prepareStatement(sql);
                 pstm.setString(1, username);
                 pstm.setString(2, MyUtils.generateHash(password));
+                pstm.setBoolean(3, true);
                 rs = pstm.executeQuery();
                 if (rs.next()) {
                     roleID = rs.getInt("roleID");
@@ -95,17 +95,17 @@ public class UserDAO implements Serializable {
         }
         return roleID;
     }
-    
+
     public UserDTO findUserIDByUsername(String username) throws Exception {
         UserDTO dto = null;
         try {
             conn = DatabaseUtils.getConnection();
-            if(conn != null) {
+            if (conn != null) {
                 String sql = "SELECT userID FROM tblUsers WHERE username = ?";
                 pstm = conn.prepareStatement(sql);
                 pstm.setString(1, username);
                 rs = pstm.executeQuery();
-                if(rs.next()) {
+                if (rs.next()) {
                     dto = new UserDTO();
                     dto.setUserID(rs.getInt("userID"));
                     dto.setUsername(username);
@@ -117,4 +117,50 @@ public class UserDAO implements Serializable {
         return dto;
     }
 
+    public UserDTO getInfo(int userID) throws Exception {
+        UserDTO dto = null;
+        try {
+            conn = DatabaseUtils.getConnection();
+            if (conn != null) {
+                String sql = "SELECT fullname, phoneNum, address, email, avatarURL, stateID FROM tblUsers WHERE userID = ?";
+                pstm = conn.prepareStatement(sql);
+                pstm.setInt(1, userID);
+                rs = pstm.executeQuery();
+                if (rs.next()) {
+                    dto = new UserDTO();
+                    dto.setUserID(userID);
+                    dto.setFullname(rs.getString("fullname"));
+                    dto.setPhoneNum(rs.getString("phoneNum"));
+                    dto.setAddress(rs.getString("address"));
+                    dto.setEmail(rs.getString("email"));
+                    dto.setAvatarURL(rs.getString("avatarURL"));
+                    dto.setStateID(rs.getInt("stateID"));
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return dto;
+    }
+
+    public boolean updateInfo(UserDTO info) throws Exception{
+        boolean check = false;
+        try {
+            conn = DatabaseUtils.getConnection();
+            if(conn != null) {
+                String sql = "UPDATE tblUsers SET fullname = ?, phoneNum = ?,address = ?, email = ?, stateID = ? WHERE userID = ?";
+                pstm = conn.prepareStatement(sql);
+                pstm.setString(1, info.getFullname());
+                pstm.setString(2, info.getPhoneNum());
+                pstm.setString(3, info.getAddress());
+                pstm.setString(4, info.getEmail());
+                pstm.setInt(5, info.getStateID());
+                pstm.setInt(6, info.getUserID());
+                check = pstm.executeUpdate() > 0;
+            }
+        } finally {
+            closeConnection();
+        }
+        return check;
+    }
 }

@@ -24,7 +24,7 @@ import javax.servlet.http.HttpSession;
  * @author ngochuu
  */
 public class ShowCartController extends HttpServlet {
-
+    public static final String ERROR = "error.jsp";
     public static final String SUCCESS = "cart.jsp";
 
     /**
@@ -39,6 +39,7 @@ public class ShowCartController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String url = ERROR;
         try {
             HttpSession session = request.getSession();
             OrderDTO orderDTO = (OrderDTO) session.getAttribute("CART");
@@ -59,11 +60,14 @@ public class ShowCartController extends HttpServlet {
                     }
                     request.setAttribute("REAL_ESTATE_IMAGE", realEstateImages);
                 }
+                url = SUCCESS;
+            } else {
+                request.setAttribute("ERROR", "Your cart is invalid!");
             }
         } catch (Exception e) {
-
+            log("ERROR at ShowCartController: " + e.getMessage());
         } finally {
-
+            request.getRequestDispatcher(SUCCESS).forward(request, response);
         }
     }
 

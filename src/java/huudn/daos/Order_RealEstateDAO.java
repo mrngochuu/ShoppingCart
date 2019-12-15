@@ -5,7 +5,6 @@
  */
 package huudn.daos;
 
-import huudn.dtos.Order_RealEstateDTO;
 import huudn.utils.DatabaseUtils;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -82,5 +81,22 @@ public class Order_RealEstateDAO implements Serializable {
             closeConnection();
         }
         return list;
+    }
+    
+    public boolean deleteProduct(int orderID, int realEstateID) throws Exception {
+        boolean check = false;
+        try {
+            conn = DatabaseUtils.getConnection();
+            if(conn != null) {
+                String sql = "DELETE FROM tblOrders_RealEstates WHERE orderID = ? AND realEstateID = ?";
+                pstm = conn.prepareStatement(sql);
+                pstm.setInt(1, orderID);
+                pstm.setInt(2, realEstateID);
+                check = pstm.executeUpdate() > 0;
+            }
+        } finally {
+            closeConnection();
+        }
+        return check;
     }
 }

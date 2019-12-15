@@ -20,15 +20,17 @@ public class MainController extends HttpServlet {
     private static final String ERROR = "error.jsp";
     private static final String LOGIN = "LoginController";
     private static final String REGISTER = "RegisterController";
-    private static final String SHOW_INFO = "ShowInfoController";
+    private static final String LOGOUT = "LogoutController";
+    private static final String ADD_TO_CART = "AddToCartController";
+    private static final String SEARCH_PRODUCT = "SearchProductController";
     private static final String UPDATE_INFO = "UpdateInfoController";
     private static final String CHANGE_CITY = "ChangeCityController";
+    private static final String PAYMENT = "PaymentController";
     private static final String DELETE_PRODUCT = "DeleteProductController";
+    private static final String DELETE_FROM_CART = "DeleteFromCartController";
     private static final String SHOW_PRODUCT_DETAILS = "ShowProductDetailsController";
-    private static final String SEARCH_PRODUCT = "SearchProductController";
-    private static final String ADD_TO_CART = "AddToCartController";
-    private static final String LOGOUT = "LogoutController";
     private static final String SHOW_CART = "ShowCartController";
+    private static final String SHOW_INFO = "ShowInfoController";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,20 +50,26 @@ public class MainController extends HttpServlet {
             
             if (action.equals("Login")) {
                 url = LOGIN;
+            } else if (action.equals("SearchProduct")) {
+                url = SEARCH_PRODUCT;
             } else if (action.equals("Register")) {
                 url = REGISTER;
             } else if (action.equals("ShowInfo")) {
                 url = SHOW_INFO;
+            } else if (action.equals("UpdateInfo")) {
+                url = UPDATE_INFO;
             } else if (action.equals("ShowProductDetails")) {
                 url = SHOW_PRODUCT_DETAILS;
             } else if (action.equals("AddToCart")) {
                 url = ADD_TO_CART;
             } else if (action.equals("ShowCart")) {
                 url = SHOW_CART;
+            } else if (action.equals("Payment")) {
+                url = PAYMENT;
+            } else if (action.equals("DeleteFromCart")) {
+                url = DELETE_FROM_CART;
             } else if (action.equals("DeleteProduct")) {
                 url = DELETE_PRODUCT;
-            } else if (action.equals("SearchProduct")) {
-                url = SEARCH_PRODUCT;
             } else if (action.equals("ChangeCity")) {
                 url = CHANGE_CITY;
             } else if (action.equals("Logout")) {
