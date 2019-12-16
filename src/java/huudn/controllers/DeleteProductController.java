@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DeleteProductController extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
-    private static final String SUCCESS = "SearchProductController";
+    private static final String SUCCESS = "AdminSearchProductController";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

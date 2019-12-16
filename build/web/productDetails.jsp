@@ -53,16 +53,12 @@
                 %>
                 <p class="mb-3">Post Time: <%= time%></p>
                 <hr>
+                <c:if test="${sessionScope.ROLE.roleName eq 'user'}">
                 <form action="MainController" method="POST" >
-                    <c:if test="${sessionScope.ROLE.roleName ne 'admin'}" var="isAdmin">
-                        <button name="action" value="AddToCart" class="btn btn-dark">Add To Cart</button>
-                    </c:if>
-                    <c:if test="${!isAdmin}">
-                        <button name="action" value="DeleteProduct" class="btn btn-dark">Delete</button>
-                        <button name="action" value="EditProduct" class="btn btn-dark">Edit</button>
-                    </c:if>
+                    <button name="action" value="AddToCart" class="btn btn-dark">Add To Cart</button>
                     <input type="hidden" name="realEstateID" value="${requestScope.REAL_ESTATE_DTO.realEstateID}">
                 </form>
+                </c:if>
                 <font color="red"><p class="mt-3">${requestScope.MESSAGE}</p></font>
             </div>
         </div>

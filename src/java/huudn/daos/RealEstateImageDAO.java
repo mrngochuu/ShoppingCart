@@ -19,7 +19,8 @@ import java.util.List;
  * @author ngochuu
  */
 public class RealEstateImageDAO implements Serializable {
-
+    private static final String DEFAULT_IMAGE = "realEstate_Default.jpg";
+    
     private Connection conn;
     private PreparedStatement pstm;
     private ResultSet rs;
@@ -74,5 +75,22 @@ public class RealEstateImageDAO implements Serializable {
             closeConnection();
         }
         return list;
+    }
+    
+    public boolean insert(int realEstateID) throws Exception {
+        boolean check = false;
+        try {
+            conn = DatabaseUtils.getConnection();
+            if(conn != null) {
+                String sql = "INSERT INTO tblRealEstateImages VALUES(?,?)";
+                pstm = conn.prepareStatement(sql);
+                pstm.setString(1, DEFAULT_IMAGE);
+                pstm.setInt(2, realEstateID);
+                check = pstm.executeUpdate() > 0;
+            }
+        } finally {
+            closeConnection();
+        }
+        return check;
     }
 }

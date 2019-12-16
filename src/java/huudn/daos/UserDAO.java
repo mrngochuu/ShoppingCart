@@ -12,6 +12,8 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -56,7 +58,7 @@ public class UserDAO implements Serializable {
         }
         return check;
     }
-
+    
     public boolean checkExistedUsername(String username) throws Exception {
         //true means the username was existed
         boolean check = false;
@@ -142,12 +144,30 @@ public class UserDAO implements Serializable {
         }
         return dto;
     }
-
-    public boolean updateInfo(UserDTO info) throws Exception{
+    
+    public boolean updateByAdmin(UserDTO dto) throws Exception {
         boolean check = false;
         try {
             conn = DatabaseUtils.getConnection();
-            if(conn != null) {
+            if (conn != null) {
+                String sql = "UPDATE tblUsers SET roleID = ?, isActive = ? WHERE userID = ?";
+                pstm = conn.prepareStatement(sql);
+                pstm.setInt(1, dto.getRoleID());
+                pstm.setBoolean(2, dto.isActive());
+                pstm.setInt(3, dto.getUserID());
+                check = pstm.executeUpdate() > 0;
+            }
+        } finally {
+            closeConnection();
+        }
+        return check;
+    }
+
+    public boolean updateInfo(UserDTO info) throws Exception {
+        boolean check = false;
+        try {
+            conn = DatabaseUtils.getConnection();
+            if (conn != null) {
                 String sql = "UPDATE tblUsers SET fullname = ?, phoneNum = ?,address = ?, email = ?, stateID = ? WHERE userID = ?";
                 pstm = conn.prepareStatement(sql);
                 pstm.setString(1, info.getFullname());
@@ -162,5 +182,49 @@ public class UserDAO implements Serializable {
             closeConnection();
         }
         return check;
+    }
+
+    public boolean updatePassword(UserDTO dto) throws Exception {
+        boolean check = false;
+        try {
+            conn = DatabaseUtils.getConnection();
+            if (conn != null) {
+                String sql = "UPDATE tblUsers SET password = ? WHERE userID = ?";
+                pstm = conn.prepareStatement(sql);
+                pstm.setString(1, MyUtils.generateHash(dto.getPassword()));
+                pstm.setInt(2, dto.getUserID());
+                check = pstm.executeUpdate() > 0;
+            }
+        } finally {
+            closeConnection();
+        }
+        return check;
+    }
+    
+    public List<UserDTO> searchUserByUsername(String username) throws Exception {
+        List<UserDTO> list = null;
+        try {
+            conn = DatabaseUtils.getConnection();
+            if (conn != null) {
+                String sql = "SELECT userID, avatarURL, username, fullname, isActive, roleID FROM tblUsers WHERE username like ?";
+                pstm = conn.prepareStatement(sql);
+                pstm.setString(1, "%" + username + "%");
+                rs = pstm.executeQuery();
+                list = new ArrayList<>();
+                while (rs.next()) {
+                    UserDTO dto = new UserDTO();
+                    dto.setUserID(rs.getInt("userID"));
+                    dto.setUsername(rs.getString("username"));
+                    dto.setFullname(rs.getString("fullname"));
+                    dto.setAvatarURL(rs.getString("avatarURL"));
+                    dto.setActive(rs.getBoolean("isActive"));
+                    dto.setRoleID(rs.getInt("roleID"));
+                    list.add(dto);
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return list;
     }
 }

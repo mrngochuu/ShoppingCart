@@ -42,6 +42,7 @@ public class RoleDAO implements Serializable {
                     RoleDTO dto = new RoleDTO();
                     dto.setRoleID(rs.getInt("roleID"));
                     dto.setRoleName(rs.getString("roleName"));
+                    listRole.add(dto);
                 }
             }
         } finally {

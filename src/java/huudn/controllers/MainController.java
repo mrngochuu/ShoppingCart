@@ -31,7 +31,12 @@ public class MainController extends HttpServlet {
     private static final String SHOW_PRODUCT_DETAILS = "ShowProductDetailsController";
     private static final String SHOW_CART = "ShowCartController";
     private static final String SHOW_INFO = "ShowInfoController";
-
+    private static final String CHANGE_PASSWORD = "ChangePasswordController";
+    private static final String ADMIN_CHANGE_CITY = "AdminChangeCityController";
+    private static final String ADMIN_SEARCH_PRODUCT = "AdminSearchProductController";
+    private static final String ADMIN_INSERT_PRODUCT = "AdminInsertProductController";
+    private static final String ADMIN_SEARCH_USER = "AdminSearchUserController";
+    private static final String ADMIN_UPDATE_USER = "AdminUpdateUserController";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -58,6 +63,18 @@ public class MainController extends HttpServlet {
                 url = SHOW_INFO;
             } else if (action.equals("UpdateInfo")) {
                 url = UPDATE_INFO;
+            } else if (action.equals("AdminSearchProduct")) {
+                url = ADMIN_SEARCH_PRODUCT;
+            } else if (action.equals("AdminInsertProduct")) {
+                url = ADMIN_INSERT_PRODUCT;
+            } else if (action.equals("AdminSearchUser")) {
+                url = ADMIN_SEARCH_USER;
+            } else if (action.equals("AdminUpdateUser")) {
+                url = ADMIN_UPDATE_USER;
+            } else if (action.equals("AdminChangeCity")) {
+                url = ADMIN_CHANGE_CITY;
+            } else if (action.equals("ChangePassword")) {
+                url = CHANGE_PASSWORD;
             } else if (action.equals("ShowProductDetails")) {
                 url = SHOW_PRODUCT_DETAILS;
             } else if (action.equals("AddToCart")) {

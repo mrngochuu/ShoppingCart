@@ -60,6 +60,34 @@
         <servlet-name>UpdateInfoController</servlet-name>
         <servlet-class>huudn.controllers.UpdateInfoController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChangePasswordController</servlet-name>
+        <servlet-class>huudn.controllers.ChangePasswordController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminSearchRealEstateController</servlet-name>
+        <servlet-class>huudn.controllers.AdminSearchRealEstateController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminSearchProductController</servlet-name>
+        <servlet-class>huudn.controllers.AdminSearchProductController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminSearchUserController</servlet-name>
+        <servlet-class>huudn.controllers.AdminSearchUserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminUpdateUserController</servlet-name>
+        <servlet-class>huudn.controllers.AdminUpdateUserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminChangeCityController</servlet-name>
+        <servlet-class>huudn.controllers.AdminChangeCityController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminInsertProductController</servlet-name>
+        <servlet-class>huudn.controllers.AdminInsertProductController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -119,6 +147,34 @@
     <servlet-mapping>
         <servlet-name>UpdateInfoController</servlet-name>
         <url-pattern>/UpdateInfoController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangePasswordController</servlet-name>
+        <url-pattern>/ChangePasswordController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminSearchRealEstateController</servlet-name>
+        <url-pattern>/AdminSearchRealEstateController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminSearchProductController</servlet-name>
+        <url-pattern>/AdminSearchProductController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminSearchUserController</servlet-name>
+        <url-pattern>/AdminSearchUserController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminUpdateUserController</servlet-name>
+        <url-pattern>/AdminUpdateUserController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminChangeCityController</servlet-name>
+        <url-pattern>/AdminChangeCityController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminInsertProductController</servlet-name>
+        <url-pattern>/AdminInsertProductController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

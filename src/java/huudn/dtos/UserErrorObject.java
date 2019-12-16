@@ -13,7 +13,8 @@ import java.io.Serializable;
  */
 public class UserErrorObject implements Serializable {
     private String usernameError, passwordError, confirmError, fullnameError, addressError, phoneNumError, emailError, stateError, cityError;
-
+    private String oldPasswordError;
+    
     public UserErrorObject() {
     }
 
@@ -88,5 +89,13 @@ public class UserErrorObject implements Serializable {
     public void setCityError(String cityError) {
         this.cityError = cityError;
     }
-    
+
+    public String getOldPasswordError() {
+        return oldPasswordError;
+    }
+
+    public void setOldPasswordError(String oldPasswordError) {
+        this.oldPasswordError = oldPasswordError;
+    }
+
 }

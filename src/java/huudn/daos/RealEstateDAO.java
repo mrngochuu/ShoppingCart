@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -55,6 +56,33 @@ public class RealEstateDAO implements Serializable {
                     dto.setDescription(rs.getString("description"));
                     dto.setArea(rs.getFloat("area"));
                     dto.setPrice(rs.getInt("price"));
+                    list.add(dto);
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return list;
+    }
+
+    public List<RealEstateDTO> getListRealEstateByCategoryIDWithoutActive(int categoryID) throws Exception {
+        List<RealEstateDTO> list = null;
+        try {
+            conn = DatabaseUtils.getConnection();
+            if (conn != null) {
+                String sql = "SELECT TOP 4 realEstateID, title, description, area, price, isActive FROM tblRealEstates WHERE categoryID = ?";
+                pstm = conn.prepareStatement(sql);
+                pstm.setInt(1, categoryID);
+                rs = pstm.executeQuery();
+                list = new ArrayList<>();
+                while (rs.next()) {
+                    RealEstateDTO dto = new RealEstateDTO();
+                    dto.setRealEstateID(rs.getInt("realEstateID"));
+                    dto.setTitle(rs.getString("title"));
+                    dto.setDescription(rs.getString("description"));
+                    dto.setArea(rs.getFloat("area"));
+                    dto.setPrice(rs.getInt("price"));
+                    dto.setActive(rs.getBoolean("isActive"));
                     list.add(dto);
                 }
             }
@@ -162,22 +190,6 @@ public class RealEstateDAO implements Serializable {
                         sql += " OR stateID = " + temp[i];
                     }
                     sql += ")";
-//                    sql += " stateID = ?";
-//                    for (int i = 2; i < temp.length; i++) {
-//                        pstm = conn.prepareStatement(sql);
-//                        pstm.setBoolean(1, true);
-//                        pstm.setInt(2, Integer.parseInt(temp[i]));
-//                        rs = pstm.executeQuery();
-//                        while (rs.next()) {
-//                            RealEstateDTO dto = new RealEstateDTO();
-//                            dto.setRealEstateID(rs.getInt("realEstateID"));
-//                            dto.setTitle(rs.getString("title"));
-//                            dto.setDescription(rs.getString("description"));
-//                            dto.setArea(rs.getFloat("area"));
-//                            dto.setPrice(rs.getInt("price"));
-//                            list.add(dto);
-//                        }
-//                    }
                 } else {
                     if (sql.lastIndexOf("AND") == (sql.length() - 3)) {
                         sql = sql.substring(0, sql.length() - 3);
@@ -195,6 +207,58 @@ public class RealEstateDAO implements Serializable {
                     dto.setDescription(rs.getString("description"));
                     dto.setArea(rs.getFloat("area"));
                     dto.setPrice(rs.getInt("price"));
+                    list.add(dto);
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return list;
+    }
+
+    public List<RealEstateDTO> fintListByTxtSearchWithoutActive(String txtSearch) throws Exception {
+        List<RealEstateDTO> list = null;
+        try {
+            conn = DatabaseUtils.getConnection();
+            if (conn != null) {
+                String sql = "Select realEstateID, title, description, area, price, isActive FROM tblRealEstates WHERE ";
+                String[] temp = txtSearch.split(",");
+                if (!temp[0].equals("")) {
+                    sql += "title like '%" + temp[0] + "%' AND";
+                }
+
+                if (!temp[1].equals("0")) {
+                    sql += " categoryID = " + temp[1] + " AND";
+                }
+
+                if (!temp[2].equals("0")) {
+                    if (sql.contains("AND")) {
+                        sql += "(";
+                    }
+                    sql += "stateID = " + temp[2];
+                    for (int i = 3; i < temp.length; i++) {
+                        sql += " OR stateID = " + temp[i];
+                    }
+                    if (sql.contains("AND")) {
+                        sql += ")";
+                    }
+                } else {
+                    if (sql.lastIndexOf("AND") == (sql.length() - 3)) {
+                        sql = sql.substring(0, sql.length() - 3);
+                    }
+                }
+
+                list = new ArrayList<>();
+                pstm = conn.prepareStatement(sql);
+                rs = pstm.executeQuery();
+                while (rs.next()) {
+                    RealEstateDTO dto = new RealEstateDTO();
+                    dto.setRealEstateID(rs.getInt("realEstateID"));
+                    dto.setTitle(rs.getString("title"));
+                    dto.setDescription(rs.getString("description"));
+                    dto.setArea(rs.getFloat("area"));
+                    dto.setPrice(rs.getInt("price"));
+                    dto.setActive(rs.getBoolean("isActive"));
                     list.add(dto);
                 }
             }
@@ -223,4 +287,32 @@ public class RealEstateDAO implements Serializable {
         return check;
     }
 
+    public int insertNewProduct(RealEstateDTO dto) throws Exception {
+        int num = 0;
+        try {
+            conn = DatabaseUtils.getConnection();
+            if (conn != null) {
+                String generatedColumns[] = {"realEstateID"};
+                String sql = "INSERT INTO tblRealEstates VALUES(?,?,?,?,?,?,?,?,?)";
+                pstm = conn.prepareStatement(sql, generatedColumns);
+                pstm.setString(1, dto.getTitle());
+                pstm.setString(2, dto.getDescription());
+                pstm.setInt(3, dto.getPrice());
+                pstm.setFloat(4, dto.getArea());
+                pstm.setDate(5, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+                pstm.setBoolean(6, true);
+                pstm.setInt(7, dto.getStateID());
+                pstm.setString(8, dto.getAddress());
+                pstm.setInt(9, dto.getCategoryID());
+                pstm.executeUpdate();
+                rs = pstm.getGeneratedKeys();
+                if(rs.next()) {
+                    num = rs.getInt(1);
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return num;
+    }
 }

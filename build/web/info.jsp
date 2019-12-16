@@ -59,7 +59,7 @@
                                         </select>
                                     </div>
                                     <font color="red"><p class="mb-3">${requestScope.INVALID.stateError}</p></font>
-                                    <input type="submit" name="action" value="UpdateInfo" class="btn btn-lg btn-primary btn-block text-uppercase mb-3"/>
+                                    <button type="submit" name="action" value="UpdateInfo" class="btn btn-lg btn-primary btn-block text-uppercase mb-3">Update</button>
                                     <font color="red"><p class="mb-3">${requestScope.MESSAGE}</p></font>
                                 </div>
                                 <input type="hidden" name="action" value="ChangeCity"/>
@@ -73,7 +73,7 @@
                                 <a href="${homeLink}">Home Page</a>
                             </div>
                             <div class="mb-3">
-                                <a href="changePassword.jsp">Change password</a>
+                                <a href="password.jsp">Change password</a>
                             </div>
                         </div>
                     </div>

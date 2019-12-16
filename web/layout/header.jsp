@@ -30,6 +30,9 @@
                 <c:url var="logoutLink" value="MainController">
                     <c:param name="action" value="Logout"/>
                 </c:url>
+                <c:url var="manageProductLink" value="MainController">
+                    <c:param name="action" value="AdminSearchProduct"/>
+                </c:url>
 
                 <c:if test="${sessionScope.ROLE.roleName eq 'user'}" var="isUser">
 
@@ -37,7 +40,7 @@
                         <a class="nav-link ml-3" href="${showCartLink}"><i class="fas fa-shopping-cart mr-1"></i>Cart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link ml-3" href="${showInfoLink}"><i class="fas fa-user-circle mr-1"></i>${sessionScope.USER.username}</a>
+                        <a class="nav-link ml-3" href="${showInfoLink}"><i class="fas fa-users-cog text-white"></i>${sessionScope.USER.username}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link ml-3" href="${logoutLink}"><i class="fas fa-sign-out-alt mr-1"></i>Logout</a>
@@ -46,16 +49,12 @@
 
                 <c:if test="${sessionScope.ROLE.roleName eq 'admin'}" var="isAdmin">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link ml-3" href="${manageProductLink}" >
                             <i class="fas fa-tasks mr-1"></i></i>Manage
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">User</a>
-                            <a class="dropdown-item" href="#">Real Estate</a>
-                        </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link ml-3" href="${showInfoLink}"><i class="fas fa-user-circle mr-1"></i>${sessionScope.USER.username}</a>
+                        <a class="nav-link ml-3" href="${showInfoLink}"><i class="fas fa-users-cog text-white"></i>${sessionScope.USER.username}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link ml-3" href="${logoutLink}"><i class="fas fa-sign-out-alt mr-1"></i>Logout</a>

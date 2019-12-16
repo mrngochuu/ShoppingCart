@@ -5,22 +5,25 @@
  */
 package huudn.controllers;
 
+import huudn.daos.UserDAO;
+import huudn.dtos.UserDTO;
+import huudn.dtos.UserErrorObject;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author ngochuu
  */
-public class InsertRealEstateController extends HttpServlet {
-    private static final String ERROR = "error.jsp";
-    private static final String SUCCESS = "index.jsp";
-    private static final String INVALID = "post.jsp";
-    
+public class ChangePasswordController extends HttpServlet {
+
+    private static final String SUCCESS = "ShowInfoController";
+    private static final String INVALID = "password.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -33,11 +36,56 @@ public class InsertRealEstateController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
+        String url = INVALID;
         try {
-            
+            HttpSession session = request.getSession();
+            UserDAO userDAO = new UserDAO();
+            UserDTO userDTO = (UserDTO) session.getAttribute("USER");
+
+            String oldPassword = request.getParameter("txtOldPassword");
+            String newPassword = request.getParameter("txtNewPassword");
+            String confirm = request.getParameter("txtConfirm");
+
+            UserErrorObject errorObj = new UserErrorObject();
+            boolean valid = true;
+
+            if (oldPassword.isEmpty()) {
+                errorObj.setOldPasswordError("Input old password!");
+                valid = false;
+            }
+
+            if (!newPassword.matches("[a-zA-Z0-9]*")) {
+                errorObj.setPasswordError("Password can not contain special characters");
+                valid = false;
+            }
+
+            if (newPassword.length() < 6 || newPassword.length() > 20) {
+                errorObj.setPasswordError("Password must contain from 6 to 20 characters!");
+                valid = false;
+            }
+
+            if (!newPassword.isEmpty() && !confirm.equals(newPassword)) {
+                errorObj.setConfirmError("Retype password is wrong!");
+                valid = false;
+            }
+
+            if (valid) {
+                int roleID = userDAO.checkLogin(userDTO.getUsername(), oldPassword);
+                if (roleID == 0) {
+                    request.setAttribute("MESSAGE", "Old password is wrong!");
+                } else {
+                    userDTO.setPassword(newPassword);
+                    if(userDAO.updatePassword(userDTO)) {
+                        url = SUCCESS;
+                    } else {
+                        request.setAttribute("MESSAGE", "Update password failed!");
+                    }
+                }
+            } else {
+                request.setAttribute("INVALID", errorObj);
+            }
         } catch (Exception e) {
-            log("ERROR at InsertRealEstateController: " + e.getMessage());
+            log("ERROR at ChangePasswordController: " + e.getMessage());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
