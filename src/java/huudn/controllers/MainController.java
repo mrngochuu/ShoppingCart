@@ -32,11 +32,21 @@ public class MainController extends HttpServlet {
     private static final String SHOW_CART = "ShowCartController";
     private static final String SHOW_INFO = "ShowInfoController";
     private static final String CHANGE_PASSWORD = "ChangePasswordController";
+    
+    private static final String USER_SHOW_HISTORY = "UserShowHistoryController";
+    private static final String USER_SHOW_HISTORY_DETAILS = "UserShowHistoryDetailsController";
+    
     private static final String ADMIN_CHANGE_CITY = "AdminChangeCityController";
     private static final String ADMIN_SEARCH_PRODUCT = "AdminSearchProductController";
     private static final String ADMIN_INSERT_PRODUCT = "AdminInsertProductController";
+    private static final String ADMIN_UPDATE_PRODUCT = "AdminUpdateProductController";
+    private static final String ADMIN_UPDATE_PRODUCT_CHANGE_CITY = "AdminUpdateProductChangeCity";
+    private static final String ADMIN_SHOW_PRODUCT = "AdminShowProductDetailsController";
     private static final String ADMIN_SEARCH_USER = "AdminSearchUserController";
+    private static final String ADMIN_SHOW_USER = "AdminShowInfoUserController";
     private static final String ADMIN_UPDATE_USER = "AdminUpdateUserController";
+    private static final String ADMIN_SHOW_ORDER_DETAIL = "AdminShowOrderDetailsController";
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -65,14 +75,24 @@ public class MainController extends HttpServlet {
                 url = UPDATE_INFO;
             } else if (action.equals("AdminSearchProduct")) {
                 url = ADMIN_SEARCH_PRODUCT;
+            } else if (action.equals("AdminShowProduct")) {
+                url = ADMIN_SHOW_PRODUCT;
+            } else if (action.equals("AdminUpdateProduct")) {
+                url = ADMIN_UPDATE_PRODUCT;
+            } else if (action.equals("AdminUpdateProductChangeCity")) {
+                url = ADMIN_UPDATE_PRODUCT_CHANGE_CITY;
             } else if (action.equals("AdminInsertProduct")) {
                 url = ADMIN_INSERT_PRODUCT;
             } else if (action.equals("AdminSearchUser")) {
                 url = ADMIN_SEARCH_USER;
             } else if (action.equals("AdminUpdateUser")) {
                 url = ADMIN_UPDATE_USER;
+            } else if (action.equals("AdminShowInfoUser")) {
+                url = ADMIN_SHOW_USER;
             } else if (action.equals("AdminChangeCity")) {
                 url = ADMIN_CHANGE_CITY;
+            } else if (action.equals("AdminShowOrderDetails")) {
+                url = ADMIN_SHOW_ORDER_DETAIL;
             } else if (action.equals("ChangePassword")) {
                 url = CHANGE_PASSWORD;
             } else if (action.equals("ShowProductDetails")) {
@@ -81,6 +101,10 @@ public class MainController extends HttpServlet {
                 url = ADD_TO_CART;
             } else if (action.equals("ShowCart")) {
                 url = SHOW_CART;
+            } else if (action.equals("UserShowHistory")) {
+                url = USER_SHOW_HISTORY;
+            } else if (action.equals("UserShowHistoryDetails")) {
+                url = USER_SHOW_HISTORY_DETAILS;
             } else if (action.equals("Payment")) {
                 url = PAYMENT;
             } else if (action.equals("DeleteFromCart")) {

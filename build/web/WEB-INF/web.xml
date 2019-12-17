@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <filter>
+        <filter-name>RoleFilter</filter-name>
+        <filter-class>huudn.filters.RoleFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>RoleFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>MainController</servlet-name>
         <servlet-class>huudn.controllers.MainController</servlet-class>
@@ -88,6 +96,42 @@
         <servlet-name>AdminInsertProductController</servlet-name>
         <servlet-class>huudn.controllers.AdminInsertProductController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminUpdateProductController</servlet-name>
+        <servlet-class>huudn.controllers.AdminUpdateProductController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminShowProductDetailsController</servlet-name>
+        <servlet-class>huudn.controllers.AdminShowProductDetailsController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminUpdateProductChangeCity</servlet-name>
+        <servlet-class>huudn.controllers.AdminUpdateProductChangeCity</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminShowInfoUser</servlet-name>
+        <servlet-class>huudn.controllers.AdminShowInfoUser</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminShowInfoUserController</servlet-name>
+        <servlet-class>huudn.controllers.AdminShowInfoUserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminShowOrderDetailsController</servlet-name>
+        <servlet-class>huudn.controllers.AdminShowOrderDetailsController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserShowHistory</servlet-name>
+        <servlet-class>huudn.controllers.UserShowHistory</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserShowHistoryController</servlet-name>
+        <servlet-class>huudn.controllers.UserShowHistoryController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserShowHistoryDetailsController</servlet-name>
+        <servlet-class>huudn.controllers.UserShowHistoryDetailsController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -175,6 +219,42 @@
     <servlet-mapping>
         <servlet-name>AdminInsertProductController</servlet-name>
         <url-pattern>/AdminInsertProductController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminUpdateProductController</servlet-name>
+        <url-pattern>/AdminUpdateProductController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminShowProductDetailsController</servlet-name>
+        <url-pattern>/AdminShowProductDetailsController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminUpdateProductChangeCity</servlet-name>
+        <url-pattern>/AdminUpdateProductChangeCity</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminShowInfoUser</servlet-name>
+        <url-pattern>/AdminShowInfoUser</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminShowInfoUserController</servlet-name>
+        <url-pattern>/AdminShowInfoUserController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminShowOrderDetailsController</servlet-name>
+        <url-pattern>/AdminShowOrderDetailsController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserShowHistory</servlet-name>
+        <url-pattern>/UserShowHistory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserShowHistoryController</servlet-name>
+        <url-pattern>/UserShowHistoryController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserShowHistoryDetailsController</servlet-name>
+        <url-pattern>/UserShowHistoryDetailsController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

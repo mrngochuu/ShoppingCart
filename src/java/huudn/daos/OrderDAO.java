@@ -11,34 +11,44 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author ngochuu
  */
 public class OrderDAO implements Serializable {
+
     private Connection conn;
     private PreparedStatement pstm;
     private ResultSet rs;
-    
-    private void closeConnection() throws Exception{
-        if(rs != null) rs.close();
-        if(pstm != null) pstm.close();
-        if(conn != null) conn.close();
+
+    private void closeConnection() throws Exception {
+        if (rs != null) {
+            rs.close();
+        }
+        if (pstm != null) {
+            pstm.close();
+        }
+        if (conn != null) {
+            conn.close();
+        }
     }
-    
+
     public OrderDTO findOrderByUserID(int userID) throws Exception {
         OrderDTO dto = null;
         try {
             conn = DatabaseUtils.getConnection();
-            if(conn != null) {
+            if (conn != null) {
                 String sql = "SELECT TOP 1 orderID FROM tblOrders WHERE userID = ? AND isCheckout = ?";
                 pstm = conn.prepareStatement(sql);
                 pstm.setInt(1, userID);
                 pstm.setBoolean(2, false);
                 rs = pstm.executeQuery();
-                if(rs.next()) {
+                if (rs.next()) {
                     dto = new OrderDTO();
                     dto.setOrderID(rs.getInt("orderID"));
                     dto.setUserID(userID);
@@ -49,12 +59,39 @@ public class OrderDAO implements Serializable {
         }
         return dto;
     }
-    
+
+    public List<OrderDTO> findHistoryByUserID(int userID) throws Exception {
+        List<OrderDTO> list = null;
+        try {
+            conn = DatabaseUtils.getConnection();
+            if (conn != null) {
+                String sql = "SELECT orderID, isCheckout, dateCheckout, total FROM tblOrders WHERE userID = ? AND isCheckout = ?";
+                pstm = conn.prepareStatement(sql);
+                pstm.setInt(1, userID);
+                pstm.setBoolean(2, true);
+                rs = pstm.executeQuery();
+                list = new ArrayList<>();
+                while (rs.next()) {
+                    OrderDTO dto = new OrderDTO();
+                    dto.setOrderID(rs.getInt("orderID"));
+                    dto.setCheckout(true);
+                    dto.setDateCheckout(new Date(rs.getDate("dateCheckout").getTime()));
+                    dto.setTotal(rs.getInt("total"));
+                    dto.setUserID(userID);
+                    list.add(dto);
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return list;
+    }
+
     public boolean createOrderByUserID(int userID) throws Exception {
         boolean check = false;
         try {
             conn = DatabaseUtils.getConnection();
-            if(conn != null) {
+            if (conn != null) {
                 String sql = "INSERT INTO tblOrders (isCheckout, userID) VALUES (?,?)";
                 pstm = conn.prepareStatement(sql);
                 pstm.setBoolean(1, false);
@@ -66,12 +103,12 @@ public class OrderDAO implements Serializable {
         }
         return true;
     }
-    
+
     public boolean checkOutOrder(int orderID, int total) throws Exception {
         boolean check = false;
         try {
             conn = DatabaseUtils.getConnection();
-            if(conn != null) {
+            if (conn != null) {
                 String sql = "Update tblOrders SET isCheckout = ?, dateCheckout = ?, total = ? WHERE orderID = ?";
                 pstm = conn.prepareStatement(sql);
                 pstm.setBoolean(1, true);

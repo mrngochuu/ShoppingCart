@@ -24,21 +24,21 @@
                     <div class="col-lg-9 bg-light">
                         <h1 class="text-center mb-5">POST REAL ESTATE</h1>
                         <h3 class="text-center mb-3"><font color="red">${requestScope.MESSAGE}</font></h3>
-                        <c:set var="success" value="${requestScope.MESSAGE eq 'Insert success'}"/>
+                        <c:set var="success" value="${requestScope.MESSAGE eq 'Insert success'}"></c:set>
                         <form action="MainController" method="GET" class="form-signin row">
                             <div class="offset-lg-1 col-lg-2">
                                 <img src="img/product/realEstate_Default.jpg" alt="No Image" width="200" height="200" border="2">
                             </div>
                             <div class="offset-lg-2 col-lg-6">
-                                <input type="text" name="title" value="<c:if test="success">${param.title}</c:if>" placeholder="Title" class="form-control mb-3"/>
+                                <input type="text" name="title" value="<c:if test="${!success}">${param.title}</c:if>" placeholder="Title" class="form-control mb-3"/>
                                 <font color="red"><p class="mb-3">${requestScope.INVALID.titleError}</p></font>
-                                <textarea name="description" placeholder="Description" class="form-control mb-3"><c:if test="success">${param.description}</c:if></textarea>
+                                <textarea name="description" placeholder="Description" class="form-control mb-3"><c:if test="${!success}">${param.description}</c:if></textarea>
                                 <font color="red"><p class="mb-3">${requestScope.INVALID.descriptionError}</p></font>
-                                <input type="text" name="price" value="<c:if test="success">${param.price}</c:if>" placeholder="Price" class="form-control mb-3"/>
+                                <input type="text" name="price" value="<c:if test="${!success}">${param.price}</c:if>" placeholder="Price" class="form-control mb-3"/>
                                 <font color="red"><p class="mb-3">${requestScope.INVALID.priceError}</p></font>
-                                <input type="text" name="area" value="<c:if test="success">${param.area}</c:if>" placeholder="Area" class="form-control mb-3"/>
+                                <input type="text" name="area" value="<c:if test="${!success}">${param.area}</c:if>" placeholder="Area" class="form-control mb-3"/>
                                 <font color="red"><p class="mb-3">${requestScope.INVALID.areaError}</p></font>
-                                <textarea name="address" rows="3" placeholder="Address" class="form-control mb-3"><c:if test="success">${param.address}</c:if></textarea>
+                                <textarea name="address" rows="3" placeholder="Address" class="form-control mb-3"><c:if test="${!success}">${param.address}</c:if></textarea>
                                 <font color="red"><p class="mb-3">${requestScope.INVALID.addressError}</p></font>
 
                                 <!-- category -->
@@ -78,7 +78,6 @@
                                     </select>
                                 </div>
                                 <font color="red"><p class="mb-3">${requestScope.INVALID.stateError}</p></font>
-
                                 <button type="submit" name="action" value="AdminInsertProduct" class="btn btn-lg btn-primary btn-block text-uppercase mb-3">POST</button>
                             </div>
                             <input type="hidden" name="action" value="AdminChangeCity"/>

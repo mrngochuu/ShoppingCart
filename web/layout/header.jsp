@@ -33,14 +33,19 @@
                 <c:url var="manageProductLink" value="MainController">
                     <c:param name="action" value="AdminSearchProduct"/>
                 </c:url>
-
+                <c:url var="showHistoryLink" value="MainController">
+                    <c:param name="action" value="UserShowHistory"/>
+                </c:url>
+                
                 <c:if test="${sessionScope.ROLE.roleName eq 'user'}" var="isUser">
-
+                    <li class="nav-item">
+                        <a class="nav-link ml-3" href="${showHistoryLink}"><i class="fas fa-history mr-1"></i>History</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link ml-3" href="${showCartLink}"><i class="fas fa-shopping-cart mr-1"></i>Cart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link ml-3" href="${showInfoLink}"><i class="fas fa-users-cog text-white"></i>${sessionScope.USER.username}</a>
+                        <a class="nav-link ml-3" href="${showInfoLink}"><i class="fas fa-users-cog mr-1"></i>${sessionScope.USER.username}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link ml-3" href="${logoutLink}"><i class="fas fa-sign-out-alt mr-1"></i>Logout</a>
@@ -54,7 +59,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link ml-3" href="${showInfoLink}"><i class="fas fa-users-cog text-white"></i>${sessionScope.USER.username}</a>
+                        <a class="nav-link ml-3" href="${showInfoLink}"><i class="fas fa-users-cog mr-1"></i>${sessionScope.USER.username}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link ml-3" href="${logoutLink}"><i class="fas fa-sign-out-alt mr-1"></i>Logout</a>

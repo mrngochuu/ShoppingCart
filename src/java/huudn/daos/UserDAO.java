@@ -227,4 +227,33 @@ public class UserDAO implements Serializable {
         }
         return list;
     }
+    
+    public UserDTO getAllInfoByID(int userID) throws Exception {
+        UserDTO dto = null;
+        try {
+            conn = DatabaseUtils.getConnection();
+            if (conn != null) {
+                String sql = "SELECT fullname, phoneNum, address, email, avatarURL, stateID, roleID, username, isActive FROM tblUsers WHERE userid = ?";
+                pstm = conn.prepareStatement(sql);
+                pstm.setInt(1, userID);
+                rs = pstm.executeQuery();
+                if (rs.next()) {
+                    dto = new UserDTO();
+                    dto.setUserID(userID);
+                    dto.setFullname(rs.getString("fullname"));
+                    dto.setPhoneNum(rs.getString("phoneNum"));
+                    dto.setAddress(rs.getString("address"));
+                    dto.setEmail(rs.getString("email"));
+                    dto.setAvatarURL(rs.getString("avatarURL"));
+                    dto.setStateID(rs.getInt("stateID"));
+                    dto.setRoleID(rs.getInt("roleID"));
+                    dto.setUsername(rs.getString("username"));
+                    dto.setActive(rs.getBoolean("isActive"));
+                }
+            }
+        } finally {
+            closeConnection();
+        }
+        return dto;
+    }
 }
