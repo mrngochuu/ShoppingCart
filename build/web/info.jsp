@@ -1,6 +1,3 @@
-<%@page import="java.util.List"%>
-<%@page import="huudn.daos.CityDAO"%>
-<%@page import="huudn.dtos.CityDTO"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>

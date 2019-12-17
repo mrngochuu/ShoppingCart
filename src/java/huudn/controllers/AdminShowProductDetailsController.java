@@ -5,7 +5,6 @@
  */
 package huudn.controllers;
 
-import huudn.daos.CityDAO;
 import huudn.daos.RealEstateDAO;
 import huudn.daos.RealEstateImageDAO;
 import huudn.daos.StateDAO;

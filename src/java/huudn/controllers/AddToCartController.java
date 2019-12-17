@@ -5,7 +5,6 @@
  */
 package huudn.controllers;
 
-import huudn.daos.OrderDAO;
 import huudn.daos.Order_RealEstateDAO;
 import huudn.daos.RealEstateDAO;
 import huudn.dtos.OrderDTO;

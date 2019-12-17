@@ -6,12 +6,10 @@
 package huudn.controllers;
 
 import huudn.daos.OrderDAO;
-import huudn.daos.Order_RealEstateDAO;
 import huudn.daos.RealEstateDAO;
 import huudn.dtos.OrderDTO;
 import huudn.dtos.UserDTO;
 import java.io.IOException;
-import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

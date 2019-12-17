@@ -10,7 +10,6 @@ import huudn.daos.RealEstateDAO;
 import huudn.daos.RealEstateImageDAO;
 import huudn.dtos.RealEstateDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Hashtable;
 import java.util.List;
 import javax.servlet.ServletException;

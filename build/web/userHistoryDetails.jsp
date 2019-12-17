@@ -19,7 +19,7 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
         <!-- fontawesome.com -->
         <script src="https://kit.fontawesome.com/5a401084f7.js" crossorigin="anonymous"></script>
-        <title>G.A.U | ${sessionScope.USER.username}'s cart</title>
+        <title>G.A.U | ${sessionScope.USER.username}'s history</title>
     </head>
     <body>
         <%@include file="layout/header.jsp" %>
